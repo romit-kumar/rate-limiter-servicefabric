@@ -16,7 +16,7 @@
     <ConfigOverrides />
     <Policies>
       <ContainerHostPolicies CodePackageRef="Code">
-		<RepositoryCredentials AccountName="ratelimiteracr1" Password="SByrsh+mrIqRfCc+etiEPMlV67nRNYfL" PasswordEncrypted="false"/>
+		<RepositoryCredentials AccountName="acr_account_name" Password="your_acr_password" PasswordEncrypted="false"/>
         <PortBinding ContainerPort="10000" EndpointRef="envoyserviceTypeEndpoint" />
       </ContainerHostPolicies>
     </Policies>
