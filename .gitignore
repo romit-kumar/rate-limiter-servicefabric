@@ -1,0 +1,14 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/weatherapi/obj
+/weatherapi/bin/Debug/netcoreapp3.1
+
+/.vs
+/packages/Microsoft.VisualStudio.Azure.Fabric.MSBuild.1.7.6
+/ratelimitersf/obj/x64/Debug
+/ratelimitersf/pkg/Debug
+/ratelimitersf/ratelimitersf.sfproj.user
+/weatherapi/weatherapi.csproj.user
+/ratelimitersf/PublishProfiles
