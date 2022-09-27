@@ -9,16 +9,16 @@ EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
 WORKDIR /src
-COPY ["rlapi/rlapi.csproj", "rlapi/"]
-RUN dotnet restore "rlapi/rlapi.csproj"
+COPY ["weatherapi/weatherapi.csproj", "weatherapi/"]
+RUN dotnet restore "weatherapi/weatherapi.csproj"
 COPY . .
-WORKDIR "/src/rlapi"
-RUN dotnet build "rlapi.csproj" -c Release -o /app/build
+WORKDIR "/src/weatherapi"
+RUN dotnet build "weatherapi.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "rlapi.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "weatherapi.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "rlapi.dll"]
+ENTRYPOINT ["dotnet", "weatherapi.dll"]
