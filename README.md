@@ -48,6 +48,32 @@ docker push {azurecontainerhost}.azurecr.io/samples/envoyservice:1.0
 
  ```
  
+ ## Create Service Fabric Managed Cluster
+ 
+ There are 2 ways to deploy Service Fabric Managed Cluster (SFMC)
+ 1. Using Azure Portal
+ 
+    1.1 Follow this link to create SFMC using Azure Portal :
+    
+        https://learn.microsoft.com/en-us/azure/service-fabric/quickstart-managed-cluster-portal
+    
+    1.2 Enable DNS service for SFMC
+        <img width="800" height = "200" alt="image" src="https://user-images.githubusercontent.com/86049525/192752806-95c63745-2e51-48d4-838b-9aff45cd1f9f.png">
+
+    1.3 Configure port 8082 as shown below
+        <img width="885" alt="image" src="https://user-images.githubusercontent.com/86049525/192752673-4a010b15-9d59-4210-b7d7-4e594b5a9dec.png">
+
+ 2. Using ARM template deployment 
+ 
+    2.1 Use below link to deploy SFMC using ARM template
+        
+        https://learn.microsoft.com/en-us/azure/service-fabric/quickstart-cluster-template
+        
+    2.2 The sample ARM template is uploaded at path ServiceFabricARMTemplate. Use below command to trigger deployment :
+    
+        New-AzResourceGroupDeployment -Name "<name-of-deployment>" -ResourceGroupName "<your-resource-group-name>" -TemplateFile <path to template.json> -TemplateParameterFile <path to parameter.json>
+
+ 
  ## Build and publish the service fabric application to service fabric managed cluster hosted on azure.
  
  1. Open ratelimiterservicefarib.sln file in Visual Studio
