@@ -1,0 +1,111 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "clusterAdminPassword": {
+            "type": "String"
+        },
+        "clientThumbprint":{
+            "type": "String"
+        },
+        "managedClusters_rate_limit_sf_name": {
+            "defaultValue": "default-rate-limit",
+            "type": "String"
+        },
+        "clusterLocation": {
+            "defaultValue": "eastus",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.ServiceFabric/managedClusters",
+            "apiVersion": "2022-06-01-preview",
+            "name": "[parameters('managedClusters_rate_limit_sf_name')]",
+            "location": "[parameters('clusterLocation')]",
+            "sku": {
+                "name": "Standard"
+            },
+            "properties": {
+                "clusterCodeVersion": "9.0.1107.9590",
+                "clusterUpgradeMode": "Automatic",
+                "clusterUpgradeCadence": "Wave0",
+                "adminUserName": "[parameters('managedClusters_rate_limit_sf_name')]",
+                "adminPassword": "[parameters('clusterAdminPassword')]",
+                "dnsName": "[parameters('managedClusters_rate_limit_sf_name')]",
+                "clientConnectionPort": 19000,
+                "httpGatewayConnectionPort": 19080,
+                "allowRdpAccess": false,
+                "loadBalancingRules": [
+                    {
+                        "frontendPort": 8082,
+                        "backendPort": 8082,
+                        "protocol": "tcp",
+                        "probeProtocol": "tcp"
+                    }
+                ],
+                "clients": [
+                    {
+                        "isAdmin": true,
+                        "thumbprint": "[parameters('clientThumbprint')]"
+                    }
+                ],
+                "addonFeatures": [
+                    "DnsService"
+                ],
+                "enableAutoOSUpgrade": false,
+                "zonalResiliency": true
+            }
+        },
+        {
+            "type": "Microsoft.ServiceFabric/managedClusters/nodetypes",
+            "apiVersion": "2022-06-01-preview",
+            "name": "[concat(parameters('managedClusters_rate_limit_sf_name'), '/nodetype1')]",
+            "location": "eastus",
+            "dependsOn": [
+                "[resourceId('Microsoft.ServiceFabric/managedClusters', parameters('managedClusters_rate_limit_sf_name'))]"
+            ],
+            "sku": {
+                "name": "Standard_P2",
+                "tier": "Standard",
+                "capacity": 6
+            },
+            "properties": {
+                "isPrimary": true,
+                "vmImagePublisher": "MicrosoftWindowsServer",
+                "vmImageOffer": "WindowsServer",
+                "vmImageSku": "2019-datacenter-with-containers",
+                "vmImageVersion": "latest",
+                "vmSize": "Standard_D2s_v3",
+                "vmInstanceCount": 6,
+                "dataDiskSizeGB": 256,
+                "dataDiskType": "StandardSSD_LRS",
+                "dataDiskLetter": "S",
+                "placementProperties": {},
+                "capacities": {},
+                "applicationPorts": {
+                    "startPort": 20000,
+                    "endPort": 30000
+                },
+                "ephemeralPorts": {
+                    "startPort": 49152,
+                    "endPort": 65534
+                },
+                "vmSecrets": [],
+                "vmExtensions": [],
+                "isStateless": false,
+                "multiplePlacementGroups": false,
+                "enableOverProvisioning": false,
+                "zones": [
+                    "1",
+                    "2",
+                    "3"
+                ],
+                "enableEncryptionAtHost": false,
+                "enableAcceleratedNetworking": false,
+                "useTempDataDisk": false
+            }
+        }
+    ]
+}
